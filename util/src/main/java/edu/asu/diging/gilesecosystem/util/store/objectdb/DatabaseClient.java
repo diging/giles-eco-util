@@ -8,14 +8,18 @@ import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.asu.diging.gilesecosystem.util.exceptions.UnstorableObjectException;
 import edu.asu.diging.gilesecosystem.util.store.IDatabaseClient;
+import edu.asu.diging.gilesecosystem.util.store.IPropertiesCopier;
 import edu.asu.diging.gilesecosystem.util.store.IStorableObject;
 
 public abstract class DatabaseClient<T extends IStorableObject> implements IDatabaseClient<T> {
 
+    @Autowired
+    protected IPropertiesCopier copier;
+    
     /*
      * (non-Javadoc)
      * 
@@ -71,10 +75,17 @@ public abstract class DatabaseClient<T extends IStorableObject> implements IData
         EntityManager em = getClient();
         em.remove(element);
     }
+    
+    public T update(T element) {
+        T existing = getById(element.getId());
+        
+        copier.copyObject(element, existing);
+        return element;
+    }
 
     protected abstract String getIdPrefix();
 
-    protected abstract Object getById(String id);
+    protected abstract T getById(String id);
     
     protected abstract EntityManager getClient();
 
