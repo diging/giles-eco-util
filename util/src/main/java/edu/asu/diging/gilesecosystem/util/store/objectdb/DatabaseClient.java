@@ -76,6 +76,7 @@ public abstract class DatabaseClient<T extends IStorableObject> implements IData
         em.remove(element);
     }
     
+    @Override
     public T update(T element) {
         T existing = getById(element.getId());
         
