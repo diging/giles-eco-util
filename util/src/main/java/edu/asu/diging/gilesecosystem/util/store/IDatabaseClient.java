@@ -15,4 +15,6 @@ public interface IDatabaseClient<T extends IStorableObject> {
 
     public abstract void delete(T element);
 
+    public abstract T update(T element);
+
 }
