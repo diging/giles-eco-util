@@ -1,6 +1,7 @@
 package edu.asu.diging.gilesecosystem.util.properties;
 
 import java.util.Map;
+import java.util.Observer;
 
 import edu.asu.diging.gilesecosystem.util.exceptions.PropertiesStorageException;
 
@@ -13,4 +14,5 @@ public interface IPropertiesManager {
     public abstract void updateProperties(Map<String, String> props)
             throws PropertiesStorageException;
 
+    public void addObserver(Observer observer);
 }

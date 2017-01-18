@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +24,7 @@ import edu.asu.diging.gilesecosystem.util.properties.IPropertiesManager;
 
 @PropertySource("classpath:/config.properties")
 @Service
-public class PropertiesManager implements IPropertiesManager {
+public class PropertiesManager extends Observable implements IPropertiesManager {
     
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -63,6 +64,8 @@ public class PropertiesManager implements IPropertiesManager {
     public void setProperty(String key, String value) throws PropertiesStorageException {
         properties.setProperty(key, value);
         saveProperties();
+        setChanged();
+        notifyObservers(key);
     }
     
     @Override
@@ -71,6 +74,8 @@ public class PropertiesManager implements IPropertiesManager {
             properties.setProperty(key, props.get(key));
         }
         saveProperties();
+        setChanged();
+        notifyObservers(props);
     }
     
     protected void saveProperties() throws PropertiesStorageException {
