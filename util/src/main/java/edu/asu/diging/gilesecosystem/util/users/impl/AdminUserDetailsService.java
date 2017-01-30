@@ -33,7 +33,7 @@ import edu.asu.diging.gilesecosystem.util.users.IGrantedAuthorityFactory;
  * @author jdamerow
  *
  */
-@Service("adminDetailsService")
+@Service("gecoAdminDetailsService")
 public class AdminUserDetailsService implements IAdminUserDetailsService {
     
     private final Logger logger = LoggerFactory.getLogger(getClass());

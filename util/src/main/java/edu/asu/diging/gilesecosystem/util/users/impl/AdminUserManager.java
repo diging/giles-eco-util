@@ -18,11 +18,11 @@ import edu.asu.diging.gilesecosystem.util.users.IAdminUserManager;
  * @author Julia Damerow
  *
  */
-@Service
+@Service("gecoAdminUserManager")
 public class AdminUserManager implements IAdminUserManager {
 
     @Autowired
-    @Qualifier("adminDetailsService")
+    @Qualifier("gecoAdminDetailsService")
     private IAdminUserDetailsService adminDetailsService;
 
     /*
