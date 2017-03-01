@@ -1,6 +1,14 @@
 package edu.asu.diging.gilesecosystem.util.files;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import edu.asu.diging.gilesecosystem.util.exceptions.FileStorageException;
 
@@ -42,5 +50,13 @@ public interface IFileStorageManager {
 
     public abstract boolean deleteFile(String username, String uploadId, String documentId,
             String filename, boolean deleteEmptyFolders);
+
+    public abstract byte[] getFileContentFromUrl(URL url) throws IOException;
+
+    public abstract void saveFileInFolder(File folder, String filename, byte[] bytes)
+            throws FileStorageException, IOException;
+
+    public abstract File createFolder(String username, String uploadId, String documentId,
+            String folderName);
 
 }

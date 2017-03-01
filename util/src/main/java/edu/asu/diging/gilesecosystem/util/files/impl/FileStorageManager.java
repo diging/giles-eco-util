@@ -51,6 +51,34 @@ public class FileStorageManager implements IFileStorageManager {
             throw new FileStorageException("Could not store file.", e);
         }
     }
+    
+    @Override
+    public File createFolder(String username, String uploadId, String documentId,
+            String folderName) {
+        String filePath = getAndCreateStoragePath(username, uploadId,
+                documentId);
+        return new File(filePath + File.separator + folderName);
+    }
+    
+    @Override
+    public void saveFileInFolder(File folder, String filename, byte[] bytes) throws FileStorageException, IOException {
+        File file = new File(folder.getAbsolutePath() + File.separator + filename);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        BufferedOutputStream stream;
+        try {
+            stream = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new FileStorageException("Could not store file.", e);
+        }
+        try {
+            stream.write(bytes);
+            stream.close();
+        } catch (IOException e) {
+            throw new FileStorageException("Could not store file.", e);
+        }
+    }
 
     @Override
     public String getAndCreateStoragePath(String username, String uploadId,
@@ -162,7 +190,8 @@ public class FileStorageManager implements IFileStorageManager {
         return true;
     }
     
-    private byte[] getFileContentFromUrl(URL url) throws IOException {
+    @Override
+    public byte[] getFileContentFromUrl(URL url) throws IOException {
         URLConnection con = url.openConnection();
         
         InputStream input = con.getInputStream();
