@@ -57,7 +57,11 @@ public class FileStorageManager implements IFileStorageManager {
             String folderName) {
         String filePath = getAndCreateStoragePath(username, uploadId,
                 documentId);
-        return new File(filePath + File.separator + folderName);
+        File folder = new File(filePath + File.separator + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        return folder;
     }
     
     @Override
