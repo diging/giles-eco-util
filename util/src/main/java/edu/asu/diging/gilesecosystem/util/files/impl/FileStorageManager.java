@@ -57,11 +57,20 @@ public class FileStorageManager implements IFileStorageManager {
             String folderName) {
         String filePath = getAndCreateStoragePath(username, uploadId,
                 documentId);
-        return new File(filePath + File.separator + folderName);
+        File folder = new File(filePath + File.separator + folderName);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        return folder;
     }
     
     @Override
     public void saveFileInFolder(File folder, String filename, byte[] bytes) throws FileStorageException, IOException {
+        
+        File fFolder = new File(folder.getAbsolutePath());
+        if (!fFolder.exists()) {
+            fFolder.mkdir();
+        }
         File file = new File(folder.getAbsolutePath() + File.separator + filename);
         if (!file.exists()) {
             file.createNewFile();
@@ -215,8 +224,14 @@ public class FileStorageManager implements IFileStorageManager {
         return bytes;
     }
     
+    @Override
     public String getBaseDirectory() {
         return baseDirectory;
+    }
+    
+    @Override
+    public String getBaseDirectoryWithFiletype() {
+        return baseDirectory + File.separator + fileTypeFolder;
     }
 
     public void setBaseDirectory(String baseDirectory) {
