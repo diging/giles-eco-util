@@ -78,9 +78,9 @@ public abstract class DatabaseClient<T extends IStorableObject> implements IData
     
     @Override
     public T update(T element) {
-        T existing = getById(element.getId());
-        
-        copier.copyObject(element, existing);
+        EntityManager em = getClient();
+        em.merge(element);
+        em.flush();
         return element;
     }
 
