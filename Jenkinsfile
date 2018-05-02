@@ -5,17 +5,20 @@ pipeline {
         jdk 'Java 1.8' 
     }
     stages {
-        stage ('Prepare') {
+        stage ('Prepare Release') {
             steps {
                 sh '''
                     cd util
-                    mvn test 
+                    mvn -B jgitflow:release-start -DscmCommentPrefix="[Jenkins] "
                 '''
             }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml' 
-                }
+        }
+        stage ('Finish Release') {
+            steps {
+                sh '''
+                    cd util
+                    mvn -B jgitflow:release-finish -DscmCommentPrefix="[Jenkins] "
+                '''
             }
         }
     }
