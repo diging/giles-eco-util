@@ -7,8 +7,10 @@ pipeline {
     stages {
         stage ('Prepare') {
             steps {
-                sh 'cd util'
-                sh 'mvn test' 
+                sh '''
+                    cd util
+                    mvn test 
+                '''
             }
             post {
                 success {
