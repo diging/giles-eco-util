@@ -119,7 +119,7 @@ public class AdminUserDetailsService implements IAdminUserDetailsService {
      * stored data.
      * @param username Username of user whose password should be checked.
      * @param password Plaintext password.
-     * @return
+     * @return true if password is valid, otherwise false
      */
     @Override
     public boolean isPasswordValid(String username, String password) {
