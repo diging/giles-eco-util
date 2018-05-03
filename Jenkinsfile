@@ -5,14 +5,15 @@ pipeline {
         jdk 'Java 1.8'
     }
     stages {
-        stage ('Prepare Release') {
+        /*stage ('Prepare Release') {
             steps {
                 sh '''
                     cd util
+                    pwd
                     mvn -B jgitflow:release-start -DscmCommentPrefix="[Jenkins] "
                 '''
             }
-        }
+        }*/
         stage ('Tag Release') {
             steps {
                 sh '''
