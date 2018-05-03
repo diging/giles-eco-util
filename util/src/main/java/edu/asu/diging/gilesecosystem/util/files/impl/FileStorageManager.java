@@ -126,10 +126,14 @@ public class FileStorageManager implements IFileStorageManager {
      * for all uploaded files (including the file type folder). This method should be used
      * in most cases.
      * 
-     * @param username
+     * @param username 
+     *      username of user who uploaded a file
      * @param uploadId
+     *      id of upload a file was part of
      * @param fileId
+     *      Id of the file to get the path to.
      * @return
+     *      path to requested file relative to the base folder
      */
     @Override
     public String getFileFolderPathInBaseFolder(String username, String uploadId,

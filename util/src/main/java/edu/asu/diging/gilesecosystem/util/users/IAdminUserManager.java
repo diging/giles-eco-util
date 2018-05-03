@@ -15,7 +15,9 @@ public interface IAdminUserManager {
      * If it is required to completely reset a password, this should be done
      * directly on the server.
      * @param username Username of admin user whose password should be changed.
-     * @param password New Password in plaintext.
+     * @param newPassword New Password in plaintext.
+     * @param oldPassword Old password
+     * @param role role of user
      * @return true if password was succesfully changed; otherwise false.
      * @throws BadPasswordException Thrown if password is empty.
      */
@@ -24,7 +26,7 @@ public interface IAdminUserManager {
 
     /**
      * Get all administrators.
-     * @return
+     * @return list of all administrators
      */
     public abstract List<UserDetails> getAdministrators();
 

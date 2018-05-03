@@ -13,7 +13,7 @@ public interface IAdminUserDetailsService extends UserDetailsService {
 
     /**
      * Return all stored admin users.
-     * @return
+     * @return list of all admin users
      */
     public abstract List<UserDetails> getAllAdmins();
 
@@ -22,7 +22,7 @@ public interface IAdminUserDetailsService extends UserDetailsService {
      * for a given plaintext password and will store the hashed password.
      * @param username Username of the user whose password should be changed.
      * @param password New password in plain text.
-     * @return
+     * @return true if change was successful, otherwise false.
      */
     public abstract boolean changePassword(String username, String password, String role);
 
