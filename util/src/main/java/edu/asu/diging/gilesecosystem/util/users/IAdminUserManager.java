@@ -7,6 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import edu.asu.diging.gilesecosystem.util.exceptions.BadPasswordException;
 import edu.asu.diging.gilesecosystem.util.exceptions.UnauthorizedException;
 
+/**
+ * Class to manage admin users.
+ * 
+ * @author jdamerow
+ *
+ */
 public interface IAdminUserManager {
 
     /**
