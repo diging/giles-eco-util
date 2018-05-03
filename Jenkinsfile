@@ -9,6 +9,7 @@ pipeline {
             steps {
                 sh '''
                     cd util
+                    pwd
                     mvn -B jgitflow:release-start -DscmCommentPrefix="[Jenkins] "
                 '''
             }
