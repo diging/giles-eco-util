@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                     cd util
-                    mvn -B jgitflow:release-finish -DnoDeploy=true -DscmCommentPrefix="[Jenkins] "
+                    mvn -B jgitflow:release-finish -DnoDeploy=true -DnoReleaseBuild=true -DscmCommentPrefix="[Jenkins] "
                 '''
             }
         }
