@@ -92,4 +92,6 @@ public interface IFileStorageManager {
      */
     public abstract String getBaseDirectoryWithFiletype();
 
+    byte[] getExtractedFileContent(String username, String uploadId, String documentId, String filename);
+
 }

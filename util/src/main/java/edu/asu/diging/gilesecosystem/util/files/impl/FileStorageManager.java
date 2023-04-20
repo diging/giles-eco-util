@@ -237,6 +237,18 @@ public class FileStorageManager implements IFileStorageManager {
     public String getBaseDirectoryWithFiletype() {
         return baseDirectory + File.separator + fileTypeFolder;
     }
+    
+    @Override
+    public byte[] getExtractedFileContent(String username, String uploadId, String documentId, String filename) {
+        String folderPath = getAndCreateStoragePath(username, uploadId, documentId);
+        File fileObject = new File(folderPath + File.separator + "extracted" + File.separator + "extracted" + File.separator + filename);
+        try {
+            return getFileContentFromUrl(fileObject.toURI().toURL());
+        } catch (IOException e) {
+            logger.error("Could not read file.", e);
+            return null;
+        }
+    }
 
     public void setBaseDirectory(String baseDirectory) {
         this.baseDirectory = baseDirectory;
