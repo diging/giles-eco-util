@@ -92,6 +92,9 @@ public interface IFileStorageManager {
      */
     public abstract String getBaseDirectoryWithFiletype();
 
-    byte[] getExtractedFileContent(String username, String uploadId, String documentId, String filename);
+    byte[] getExtractedFileContent(String username, String uploadId, String documentId, int pageNr, String filename);
+    
+    public boolean deleteExtractedFile(String username, String uploadId, String documentId, int pageNr,
+            String filename, boolean deleteEmptyFolders);
 
 }

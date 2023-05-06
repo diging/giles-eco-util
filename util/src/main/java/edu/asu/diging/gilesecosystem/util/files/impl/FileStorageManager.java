@@ -239,15 +239,49 @@ public class FileStorageManager implements IFileStorageManager {
     }
     
     @Override
-    public byte[] getExtractedFileContent(String username, String uploadId, String documentId, String filename) {
+    public byte[] getExtractedFileContent(String username, String uploadId, String documentId, int pageNr, String filename) {
         String folderPath = getAndCreateStoragePath(username, uploadId, documentId);
-        File fileObject = new File(folderPath + File.separator + "extracted" + File.separator + "extracted" + File.separator + filename);
+        File fileObject = new File(folderPath + File.separator + "extracted" + File.separator + pageNr + File.separator + "extracted" + File.separator + filename);
         try {
             return getFileContentFromUrl(fileObject.toURI().toURL());
         } catch (IOException e) {
             logger.error("Could not read file.", e);
             return null;
         }
+    }
+    
+    @Override
+    public boolean deleteExtractedFile(String username, String uploadId, String documentId, int pageNr,
+            String filename, boolean deleteEmptyFolders) {
+        String folderPath = getAndCreateStoragePath(username, uploadId, documentId);
+        File file = new File(folderPath + File.separator + "extracted" + File.separator + pageNr + File.separator + "extracted" + File.separator + filename);
+        
+        if (file.exists()) {
+            file.delete();
+        }
+        
+        if (deleteEmptyFolders) {
+            File docFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr + File.separator + "extracted");
+            if (docFolder.isDirectory() && docFolder.list().length == 0) {
+                boolean deletedDocFolder = docFolder.delete();
+                if (deletedDocFolder) {
+                    File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
+                    // we now this is a folder because we just deleted docfolder from it
+                    // so no need to check
+                    if (pageNrFolder.exists() && pageNrFolder.list().length == 0) {
+                        boolean deletedPageNrFolder = pageNrFolder.delete();
+                        if (deletedPageNrFolder) {
+                            File extractedFolder = new File(folderPath + File.separator + "extracted");
+                            if (extractedFolder.exists() && extractedFolder.list().length == 0) {
+                                extractedFolder.delete();
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        
+        return true;
     }
 
     public void setBaseDirectory(String baseDirectory) {
@@ -266,5 +300,4 @@ public class FileStorageManager implements IFileStorageManager {
     public void setFileTypeFolder(String fileTypeFolder) {
         this.fileTypeFolder = fileTypeFolder;
     }
-
 }
