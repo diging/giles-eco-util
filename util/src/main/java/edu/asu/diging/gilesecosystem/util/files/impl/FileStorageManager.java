@@ -266,15 +266,11 @@ public class FileStorageManager implements IFileStorageManager {
                 boolean deletedDocFolder = docFolder.delete();
                 if (deletedDocFolder) {
                     File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
-                    // we now this is a folder because we just deleted docfolder from it
-                    // so no need to check
-                    if (pageNrFolder.exists() && pageNrFolder.list().length == 0) {
-                        boolean deletedPageNrFolder = pageNrFolder.delete();
-                        if (deletedPageNrFolder) {
-                            File extractedFolder = new File(folderPath + File.separator + "extracted");
-                            if (extractedFolder.exists() && extractedFolder.list().length == 0) {
-                                extractedFolder.delete();
-                            }
+                    boolean deletedPageNrFolder = pageNrFolder.delete();
+                    if (deletedPageNrFolder) {
+                        File extractedFolder = new File(folderPath + File.separator + "extracted");
+                        if (extractedFolder.exists() && extractedFolder.list().length == 0) {
+                            extractedFolder.delete();
                         }
                     }
                 }
