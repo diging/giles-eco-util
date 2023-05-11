@@ -259,25 +259,33 @@ public class FileStorageManager implements IFileStorageManager {
         if (file.exists()) {
             file.delete();
         }
-        
+        System.out.println("pageNr " + pageNr);
         if (deleteEmptyFolders) {
-            File docFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr + File.separator + "extracted");
-            if (docFolder.isDirectory() && docFolder.list().length == 0) {
-                boolean deletedDocFolder = docFolder.delete();
-                if (deletedDocFolder) {
-                    File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
-                    boolean deletedPageNrFolder = pageNrFolder.delete();
-                    if (deletedPageNrFolder) {
-                        File extractedFolder = new File(folderPath + File.separator + "extracted");
-                        if (extractedFolder.exists() && extractedFolder.list().length == 0) {
-                            extractedFolder.delete();
-                        }
-                    }
-                }
-            } 
+            boolean deletedDocFolder = deleteExtractedFolderForPage(folderPath, pageNr);
+            System.out.println("deletedDocFolder " + deletedDocFolder);
+            boolean deletedPageNrFolder = deletePageNrFolder(folderPath, pageNr, deletedDocFolder);
+            System.out.println("deletedPageNrFolder " + deletedPageNrFolder);
+            boolean deleteExtractedFolder = deleteExtractedFolder(folderPath, deletedPageNrFolder);
+            System.out.println("deleteExtractedFolder " + deleteExtractedFolder);
+            boolean deleteDownloadFolder = deleteDocumentFolder(folderPath, deleteExtractedFolder);
+            System.out.println("deleteDownloadFolder " + deleteDownloadFolder);
+            deleteUploadFolder(username, uploadId, deleteDownloadFolder);
         }
         
         return true;
+    }
+    
+    @Override
+    public boolean deletePageNrFolder(String folderPath, int pageNr, boolean extractedFolderDeleted) {
+        if (!extractedFolderDeleted) {
+            return false;
+        }
+        File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
+        deleteFilesFromFolder(pageNrFolder);
+        if (pageNrFolder.exists() && pageNrFolder.list().length == 0) {
+            return pageNrFolder.delete();
+        }
+        return !pageNrFolder.exists();
     }
 
     public void setBaseDirectory(String baseDirectory) {
@@ -295,5 +303,57 @@ public class FileStorageManager implements IFileStorageManager {
 
     public void setFileTypeFolder(String fileTypeFolder) {
         this.fileTypeFolder = fileTypeFolder;
+    }
+    
+    private boolean deleteExtractedFolderForPage(String folderPath, int pageNr) {
+        File docFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr + File.separator + "extracted");
+        if (docFolder.isDirectory() && docFolder.list().length == 0) {
+            return docFolder.delete();
+        }
+        return !docFolder.exists();
+    }
+    
+    private boolean deleteExtractedFolder(String folderPath, boolean pageNrFolderDeleted) {
+        if (!pageNrFolderDeleted) {
+            return false;
+        }
+        File extractedFolder = new File(folderPath + File.separator + "extracted");
+        if (extractedFolder.exists() && extractedFolder.list().length == 0) {
+            return extractedFolder.delete();
+        }
+        return !extractedFolder.exists();
+    }
+
+    private boolean deleteDocumentFolder(String folderPath, boolean extractedFolderDeleted) {
+        if (!extractedFolderDeleted) {
+            return false;
+        }
+        File documentFolder = new File(folderPath);
+        if (documentFolder.exists()) {
+            deleteFilesFromFolder(documentFolder);
+            return documentFolder.delete();
+        }
+        return !documentFolder.exists();
+    }
+    
+    private boolean deleteUploadFolder(String username, String uploadId, boolean documentFolderDeleted) {
+        if (!documentFolderDeleted) {
+            return false;
+        }
+        File uploadFolder = new File(baseDirectory + File.separator
+                + getFileFolderPathInBaseFolder(username, uploadId, null));
+        if (uploadFolder.exists() && uploadFolder.list().length == 0) {
+            return uploadFolder.delete();
+        }
+        return !uploadFolder.exists();
+    }
+    
+    private void deleteFilesFromFolder(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
     }
 }

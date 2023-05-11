@@ -97,4 +97,6 @@ public interface IFileStorageManager {
     public boolean deleteExtractedFile(String username, String uploadId, String documentId, int pageNr,
             String filename, boolean deleteEmptyFolders);
 
+    boolean deletePageNrFolder(String folderPath, int pageNr, boolean extractedFolderDeleted);
+
 }
