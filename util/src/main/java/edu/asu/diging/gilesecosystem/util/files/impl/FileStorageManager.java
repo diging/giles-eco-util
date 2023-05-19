@@ -259,33 +259,15 @@ public class FileStorageManager implements IFileStorageManager {
         if (file.exists()) {
             file.delete();
         }
-        System.out.println("pageNr " + pageNr);
         if (deleteEmptyFolders) {
             boolean deletedDocFolder = deleteExtractedFolderForPage(folderPath, pageNr);
-            System.out.println("deletedDocFolder " + deletedDocFolder);
             boolean deletedPageNrFolder = deletePageNrFolder(folderPath, pageNr, deletedDocFolder);
-            System.out.println("deletedPageNrFolder " + deletedPageNrFolder);
             boolean deleteExtractedFolder = deleteExtractedFolder(folderPath, deletedPageNrFolder);
-            System.out.println("deleteExtractedFolder " + deleteExtractedFolder);
             boolean deleteDownloadFolder = deleteDocumentFolder(folderPath, deleteExtractedFolder);
-            System.out.println("deleteDownloadFolder " + deleteDownloadFolder);
             deleteUploadFolder(username, uploadId, deleteDownloadFolder);
         }
         
         return true;
-    }
-    
-    @Override
-    public boolean deletePageNrFolder(String folderPath, int pageNr, boolean extractedFolderDeleted) {
-        if (!extractedFolderDeleted) {
-            return false;
-        }
-        File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
-        deleteFilesFromFolder(pageNrFolder);
-        if (pageNrFolder.exists() && pageNrFolder.list().length == 0) {
-            return pageNrFolder.delete();
-        }
-        return !pageNrFolder.exists();
     }
 
     public void setBaseDirectory(String baseDirectory) {
@@ -311,6 +293,18 @@ public class FileStorageManager implements IFileStorageManager {
             return docFolder.delete();
         }
         return !docFolder.exists();
+    }
+    
+    private boolean deletePageNrFolder(String folderPath, int pageNr, boolean extractedFolderDeleted) {
+        if (!extractedFolderDeleted) {
+            return false;
+        }
+        File pageNrFolder = new File(folderPath + File.separator + "extracted" + File.separator + pageNr);
+        deleteFilesFromFolder(pageNrFolder);
+        if (pageNrFolder.exists() && pageNrFolder.list().length == 0) {
+            return pageNrFolder.delete();
+        }
+        return !pageNrFolder.exists();
     }
     
     private boolean deleteExtractedFolder(String folderPath, boolean pageNrFolderDeleted) {

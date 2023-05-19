@@ -91,12 +91,31 @@ public interface IFileStorageManager {
      * @return configured base directory with configured file type folder
      */
     public abstract String getBaseDirectoryWithFiletype();
+    
+    /**
 
+    Retrieves the content of an extracted file specified by the provided parameters.
+    @param username The name of the user who uploaded the file.
+    @param uploadId The unique identifier of the upload session.
+    @param documentId The identifier of the document containing the extracted file.
+    @param pageNr The page number within the document where the extracted file is located.
+    @param filename The name of the extracted file to retrieve.
+    @return The content of the extracted file as a byte array.
+    */
     byte[] getExtractedFileContent(String username, String uploadId, String documentId, int pageNr, String filename);
     
+    /**
+
+    Deletes an extracted file specified by the provided parameters.
+    @param username The name of the user who uploaded the file.
+    @param uploadId The unique identifier of the upload session.
+    @param documentId The identifier of the document containing the extracted file.
+    @param pageNr The page number within the document where the extracted file is located.
+    @param filename The name of the extracted file to delete.
+    @param deleteEmptyFolders Flag indicating whether to delete empty folders after file deletion.
+    @return {@code true} if the file deletion was successful, {@code false} otherwise.
+    */
     public boolean deleteExtractedFile(String username, String uploadId, String documentId, int pageNr,
             String filename, boolean deleteEmptyFolders);
-
-    boolean deletePageNrFolder(String folderPath, int pageNr, boolean extractedFolderDeleted);
 
 }
