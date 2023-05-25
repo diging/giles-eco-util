@@ -43,10 +43,15 @@ public abstract class DatabaseClient<T extends IStorableObject> implements IData
         String id = null;
         while (true) {
             id = prefix + generateUniqueId();
-            T existing = f.apply(id);
-            if (existing == null) {
+            if (f != null) {
+                T existing = f.apply(id);
+                if (existing == null) {
+                    break;
+                } 
+            } else {
                 break;
             }
+            
         }
         return id;
     }
